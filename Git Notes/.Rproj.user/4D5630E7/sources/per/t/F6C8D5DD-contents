@@ -1,0 +1,79 @@
+---
+title: "Working with Git"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Introduction to Committing
+\
+Specify local commits and how they're created using Git
+\
+
+When you work on projects, you'll find yourself periodically making commits and recording snapshots in Git's history. When you build a commit, you leverage the index as kind of a workbench to put all the parts together. This is called staging changes. And the index is also called the staging area. So here's how it's done. 
+
+\
+\
+
+
+[The Git Bash shell is open in a Windows environment. The prompt is: `Jamie@DESKTOP-31BOLBN MINGW64 ~/git/132411`.] I'll start by listing the contents of this directory, and you can see there's one file in there. This is our project. [The presenter runs the `$ ls` command. The output is: `file01`.] 
+
+\
+
+I want to change it, so I'll bring up the editor. [He runs the command: `$ emacs file01`. The Emacs text editor opens `file01`.] Okay, I'm going to add a line right here. And close that, save it. [He types the following code in the top window: `New feature`. He saves and closes emacs, which returns him to the shell.]
+
+\
+
+Now, `$ git status` is going to tell us if that file has changed. You can see there in red that it's been modified.  But *nothing has been staged yet*. And if I want to look at the changes that I've made so far, I can do this: type `$ git diff`.
+
+\
+
+Okay, this shows the changes that I made to the file. And you see the `@` symbols appear wherever a change is made. [He refers to the row of output: `@@ -1,4 +1,4 @@`.] These denote something called `hunks`, which are separate sets of changes. Deletes are denoted by a minus sign and red text, while additions are treated with plus signs and green text. [He refers to a row of output that displays in red font: `-10`. Then he refers to a row of output that displays in green font: `+10 New feature`.]
+
+\
+
+The values and symbols after the double `@` signs are `hunk identifiers`. They identify different hunks that can be isolated, for example, if you wanted to treat different sections of edits differently in Git. 
+
+\
+
+So that's great. I know what it looks like. I know what the changes look like. And I'm ready to commit. 
+
+\
+
+First, type `$ git status` again. This will show that the changes made to `file01` have not yet been staged for commit.  To stage the changes, type `$ git add file01`.  Now `file01` is staged for commit via `$ git commit`. This will then prompt you to describe the changes that were made in this latest commit.
+
+\
+
+Okay, so everything looks good. Now if I do a `$ git status` again, we can see there's nothing in there. [He runs the command. The output is: `On branch master nothing to commit, working tree clean`.] And we now have actually changed the status of that file. We've made a change to it. We've committed with it using Git, and adding that line in. So that we know that this particular change was feature number one, the first feature that we've changed in our imaginary software.
+
+\
+\
+\
+\
+\
+\
+
+# Advanced Committing  
+
+\
+
+Describe how to create and merge local commits using Git
+\
+\
+
+Okay, I'm going to start by listing the contents of my project. I've got two files there. [The Git Bash shell is open. The prompt is: `Jamie@DESKTOP-31BOLBN MINGW64 ~/git/132412`. The presenter runs the `$ ls` command and the output is: `file01 file02`. ] 
+\
+Now let's take a look at what's happening here. These files have been modified. If I run a `$ git diff` on them, you can see that we actually have two changes here that are staged.
+\
+[He runs the git diff command. He highlights a row of output for file01: `@@ -10,9 +10,8 @@ Add new line`.  
+
+Then he highlights a row of output for file02: `@@ -0,0 +1 @@`.] 
+\
+\
+\
+And so, essentially, it's everything that's after the double ampersands in blue. And those reflect the changes that have been made in the course of my project. [He highlights a section of output for file02: @@ -0,0 +1 @@ +New file \ No newline at end of file. ] But instead of thinking of the changes as being related, and having to be kept together, you should think of them as being completely separate changes that don't have any relation to each other. So perhaps, the top change is new functionality that I've made, a new feature. And the bottom one is documentation, or documenting something that's entirely unrelated to the new feature that we added earlier in the software. So we want to separate these changes and put them in separate commits. Now, it's easier when you're looking at a single commit to tell what's related and what's not. The index will help, the index allows you to stage different parts of the file at different times. Now, there are two main ways to do this. The first is on the command line using git add --patch, or -p is the short version. [He runs the command: git add --patch. Several rows of output display for file01, of which the final row is a prompt: Stage this hunk [y,n,q,a,d,/,s,e,?]?. ] Now, what this does is cause Git to enter an interactive mode, where it gives you diff hunk. So the first stage to commit. So the first change, asking, if we want to stage it. Now, there are plenty of options here, but for now, we just want to stick with yes or no answers. I'll say yes to this one. Actually, no, I'm going to say no to this one, the new feature. [He enters "n" at the prompt and output for file02 returns. The final row is a prompt to stage the hunk. ] And then we go onto the second hunk. And at this point, I'm going to say, yes, I do want to stage this. So we're ignoring the first one and just focusing in on staging the second one. [He enters "y" at the prompt. No output displays. ] And if I type git status file01, okay, now this is interesting. We see that we have changes to be committed here with modified file01. [He points to a section of output: Changes to be committed: (use "git reset HEAD <file>..." to unstage) modified: file01. ] But changes not staged for commit down here, and then red modified. So we haven't staged that. [He points to a section of the output: Changes not staged for commit. The section includes output that displays in red font: modified: file01. ] If I do the same command, but this time with file02. Notice, how we just have one entry, changes to be committed for the file02, because we chose that specific hunk, and that's staged. [He runs the command: git status file02. He points to a section of output as follows: Changes to be committed: (use "git reset HEAD <file>..." to unstage) new file: file02. ] And if I type git commit -v, so that I can review the changes before I make them. [He runs the command and Emacs opens. The interface includes two windows. The top window contains a section of text requesting a commit message to be entered for the change. ] Now, we can see just the changes from that second hunk and not the first one, because that's what we've chosen. [He refers to the text: Changes not staged for commit: modified: file01. ] And I'll enter a commit message here. Say, I'll type in here New documentation for unrelated feature. [He types the line above the section of text. ] So we would be very specific here and say this is what we've done with this particular hunk. And that way, we would know that it's not related to the first set of changes that we saw. So I'll go ahead and click close and save. [He clicks Close and clicks Yes in the prompt. He returns to the Git Bash shell. ] And if I do a git status now, notice how file01 is in the modified state. [He refers to a line in the output: modified: file01. ] And if we do a git diff now, only the changes that weren't included from that first hunk remain. And the second hunk is now committed with the last operation that we did. [He runs the command and several rows of output display related to file01. ] So if I type this commit -av, you know what, this is not exactly what I was trying to do so. End it before I typed in that commit -av command. We'll just leave it at that. [He runs the commit -av command and the output is: bash: commit: command not found. ] Maybe if you could use what was on the screen at that point, and just had me say this, this will close it off. So that's essentially how you perform partial commit. It's a very useful feature in Git. Because often, you're going to have several different aspects of an application project being worked on at the same time, ostensibly, by different people as well. And this is a great way of being able to specify exactly what it is you want to commit when you're working with Git.
+
+
