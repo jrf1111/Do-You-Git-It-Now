@@ -1,0 +1,7 @@
+#temp files
+**/~$*
+
+#R files
+**/.R*
+
+**/.DS_Store
